@@ -1,0 +1,122 @@
+{
+  "entities": {
+    "Reel": {
+      "title": "Reel",
+      "description": "Short video post with metadata and engagement metrics",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "videoUrl": { "type": "string" },
+        "localUriString": { "type": "string" },
+        "thumbnailUrl": { "type": "string" },
+        "caption": { "type": "string" },
+        "tags": { "type": "array" },
+        "musicTitle": { "type": "string" },
+        "musicArtist": { "type": "string" },
+        "creatorId": { "type": "string" },
+        "creatorName": { "type": "string" },
+        "creatorHandle": { "type": "string" },
+        "creatorAvatarUrl": { "type": "string" },
+        "isVerified": { "type": "boolean" },
+        "likesCount": { "type": "integer" },
+        "commentsCount": { "type": "integer" },
+        "sharesCount": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "thumbnailUrl", "caption", "creatorId", "creatorName", "creatorHandle", "creatorAvatarUrl", "likesCount", "commentsCount"]
+    },
+    "Comment": {
+      "title": "Comment",
+      "description": "User comment under a reel",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "reelId": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "userHandle": { "type": "string" },
+        "userAvatarUrl": { "type": "string" },
+        "commentText": { "type": "string" },
+        "likesCount": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "reelId", "userId", "userName", "userHandle", "userAvatarUrl", "commentText", "likesCount"]
+    },
+    "User": {
+      "title": "User",
+      "description": "User profile with bio, stats, and badges",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "handle": { "type": "string" },
+        "avatarUrl": { "type": "string" },
+        "bio": { "type": "string" },
+        "followersCount": { "type": "integer" },
+        "followingCount": { "type": "integer" },
+        "likesCount": { "type": "integer" },
+        "isPremium": { "type": "boolean" },
+        "isVerified": { "type": "boolean" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "displayName", "handle", "avatarUrl"]
+    },
+    "Follow": {
+      "title": "Follow",
+      "description": "Follow relationship between follower and creator",
+      "type": "object",
+      "properties": {
+        "followerId": { "type": "string" },
+        "followingId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["followerId", "followingId"]
+    },
+    "UserLike": {
+      "title": "UserLike",
+      "description": "Liked reel reference for user",
+      "type": "object",
+      "properties": {
+        "reelId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["reelId"]
+    },
+    "UserSaved": {
+      "title": "UserSaved",
+      "description": "Saved reel reference for user",
+      "type": "object",
+      "properties": {
+        "reelId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["reelId"]
+    }
+  },
+  "firestore": {
+    "/reels/{reelId}": {
+      "schema": { "$ref": "#/entities/Reel" },
+      "description": "Public video reels feed readable by all users"
+    },
+    "/reels/{reelId}/comments/{commentId}": {
+      "schema": { "$ref": "#/entities/Comment" },
+      "description": "Real-time comments under each reel"
+    },
+    "/follows/{followId}": {
+      "schema": { "$ref": "#/entities/Follow" },
+      "description": "Follow relationships matching InTube collection structure"
+    },
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profile document"
+    },
+    "/users/{userId}/likes/{reelId}": {
+      "schema": { "$ref": "#/entities/UserLike" },
+      "description": "Reels liked by the user"
+    },
+    "/users/{userId}/saved/{reelId}": {
+      "schema": { "$ref": "#/entities/UserSaved" },
+      "description": "Reels saved by the user"
+    }
+  }
+}

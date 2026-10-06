@@ -1,0 +1,6 @@
+{
+  "name": "InTube",
+  "description": "Short-form video and reels social platform with trending feed, music, comments, and creator profiles.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
