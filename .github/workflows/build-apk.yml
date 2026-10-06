@@ -7,18 +7,47 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
-
       - uses: gradle/actions/setup-gradle@v4
 
-      - name: Fix google-services.json with correct package
+      - name: Fix google-services.json
         run: |
-          echo '{"project_info":{"project_number":"123456789","project_id":"intube-dummy","storage_bucket":"dummy.appspot.com"},"client":[{"client_info":{"mobilesdk_app_id":"1:123456789:android:abcdef","android_client_info":{"package_name":"com.aistudio.intube.kyrnnor"}},"oauth_client":[],"api_key":[{"current_key":"AIzaSyDummyKey-1234567890"}],"services":{"appinvite_service":{"other_platform_oauth_client":[]}}}],"configuration_version":"1"}' > app/google-services.json
-          cat app/google-services.json
+          mkdir -p app
+          cat > app/google-services.json <<'EOF'
+          {
+            "project_info": {
+              "project_number": "123456789",
+              "project_id": "intube-dummy",
+              "storage_bucket": "dummy.appspot.com"
+            },
+            "client": [
+              {
+                "client_info": {
+                  "mobilesdk_app_id": "1:123456789:android:abcdef123456",
+                  "android_client_info": {
+                    "package_name": "com.aistudio.intube.kyrnnor"
+                  }
+                },
+                "oauth_client": [],
+                "api_key": [
+                  {
+                    "current_key": "AIzaSyDummyKey1234567890"
+                  }
+                ],
+                "services": {
+                  "appinvite_service": {
+                    "other_platform_oauth_client": []
+                  }
+                }
+              }
+            ],
+            "configuration_version": "1"
+          }
+          EOF
+          ls -l app/google-services.json
 
       - name: Build APK
         run: ./gradlew assembleDebug --stacktrace
